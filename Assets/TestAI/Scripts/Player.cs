@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using BehaviorDesigner.Runtime;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Player : MonoBehaviour
@@ -44,6 +45,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        if (!isRobot) {
+            var tree = GetComponent<BehaviorTree>();
+            tree.enabled = false;
+        }
     }
 
     void Update()
@@ -55,7 +61,7 @@ public class Player : MonoBehaviour
         // 左键移动
         if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
         {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
                 agent.destination = m_HitInfo.point;
         }
@@ -63,7 +69,7 @@ public class Player : MonoBehaviour
         // 右键攻击
         if (Input.GetMouseButtonDown(1))
         {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
             {
                 Vector3 shootPos = m_HitInfo.point;
