@@ -45,7 +45,6 @@ public class FloatingPlane : MonoBehaviour
 	private IEnumerator _MoveToEndByForce()
 	{
 		rb.isKinematic = false;
-		float maxS = Vector3.Distance(pos1, pos2);
 		Vector3 startPos = transform.position;
 		Vector3 endPos = (moveDirection == MoveDirection.Left) ? pos1 : pos2;
 
@@ -71,7 +70,6 @@ public class FloatingPlane : MonoBehaviour
 	private IEnumerator _MoveToEnd()
 	{
 		// 设定移动速度
-		float maxS = Vector3.Distance(pos1, pos2);
 		Vector3 startPos = transform.position;
 		Vector3 endPos = (moveDirection == MoveDirection.Left) ? pos1 : pos2;
 		float s = Vector3.Distance(transform.position, endPos);
