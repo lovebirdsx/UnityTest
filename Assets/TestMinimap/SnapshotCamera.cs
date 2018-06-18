@@ -4,17 +4,23 @@ using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class SnapshotCamera : MonoBehaviour {
-	
-	void Start() {
-		StartCoroutine(_WaitAndDestory());
+
+	public Light mainLight;
+
+	void EnableLightShadow(bool isEnable) {		
+		mainLight.shadows = isEnable ? LightShadows.Soft : LightShadows.None;
 	}
 
-	IEnumerator _WaitAndDestory() {
-		for (int i = 0; i < 3; i++) {
-			yield return new WaitForFixedUpdate();
-		}
-		Camera camera = GetComponent<Camera>();
+	void RenderToImage() {
+		var camera = GetComponent<Camera>();
+		camera.Render();
 		camera.targetTexture = null;
+	}
+
+	void Start() {
+		EnableLightShadow(false);
+		RenderToImage();
+		EnableLightShadow(true);
 		Destroy(gameObject);
 	}
 }
