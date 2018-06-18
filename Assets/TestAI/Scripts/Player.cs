@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using BehaviorDesigner.Runtime;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -58,8 +59,12 @@ public class Player : MonoBehaviour
         if (isRobot)
             return;
 
+        // 避免响应UI的消息
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         // 左键移动
-        if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetMouseButtonDown(0))
         {
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
