@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using BehaviorDesigner.Runtime;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Player : MonoBehaviour
-{
-    public float hp = 100.0f;
+public class Player : MonoBehaviour {
+    public int maxHp = 100;
+    public int hp = 100;
     public Rigidbody bullet;
     public bool isRobot = false;
 
@@ -22,10 +22,8 @@ public class Player : MonoBehaviour
 
     RaycastHit m_HitInfo = new RaycastHit();
 
-    public bool IsMoveFinished
-    {
-        get
-        {
+    public bool IsMoveFinished {
+        get {
             // 超过2秒都没有移动,则当成移动完成
             // 主要是为了处理一些莫名其妙的被卡住的情况
             if (Time.time - lastMoveTime > 2.0f)
@@ -35,16 +33,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public bool CanShoot
-    {
-        get
-        {
-            return Time.time - lastShootTime >= shootCd;
-        }
-    }
+    public bool CanShoot { get { return Time.time - lastShootTime >= shootCd; } }
+    public bool IsDead { get { return hp == 0; } }
+    public int Hp {get {return hp;} }
 
-    void Start()
-    {
+    void Start() {
         agent = GetComponent<NavMeshAgent>();
 
         if (!isRobot) {
@@ -53,8 +46,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Update()
-    {
+    void Update() {
         // 机器人不响应玩家的操作
         if (isRobot)
             return;
@@ -64,41 +56,34 @@ public class Player : MonoBehaviour
             return;
 
         // 左键移动
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)) {
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
                 agent.destination = m_HitInfo.point;
         }
 
         // 右键攻击
-        if (Input.GetMouseButtonDown(1))
-        {
+        if (Input.GetMouseButtonDown(1)) {
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-            {
+            if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo)) {
                 Vector3 shootPos = m_HitInfo.point;
                 shootPos.y = transform.position.y;
-                if (CanShoot)
-                {
+                if (CanShoot) {
                     Shoot(shootPos);
                 }
             }
         }
     }
 
-    public void Move(Vector3 pos)
-    {
+    public void Move(Vector3 pos) {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(pos, out hit, 0.2f, 1))
-        {
+        if (NavMesh.SamplePosition(pos, out hit, 0.2f, 1)) {
             agent.destination = hit.position;
             lastMoveTime = Time.time;
         }
     }
 
-    public void Shoot(Vector3 pos)
-    {
+    public void Shoot(Vector3 pos) {
         Quaternion rotation = Quaternion.FromToRotation(transform.position, pos);
         Vector3 direction = Vector3.Normalize(pos - transform.position);
         Vector3 spawnPos = transform.position + direction * 0.5f;
@@ -110,5 +95,11 @@ public class Player : MonoBehaviour
         Destroy(clonedBullet.gameObject, bulletFlyTime);
 
         lastShootTime = Time.time;
+    }
+
+    public void TakeDamage(int damage) {
+        hp -= damage;
+        if (hp < 0)
+            hp = 0;
     }
 }

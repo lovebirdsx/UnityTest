@@ -4,10 +4,10 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
 
-public class EditModeTest1 {
+public class PureLogicTests {
 
 	[Test]
-	public void RandomCirclePosInQuad() {
+	public void RandomCirclePosInQuad_Range_OK() {
 		float w = 10;
 		float h = 10;
 		float r = 5;
