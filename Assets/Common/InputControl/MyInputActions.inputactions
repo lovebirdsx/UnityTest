@@ -11,7 +11,8 @@
                     "id": "13f9be44-3d73-4873-9ee3-49b8434134c3",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "mouse",
@@ -19,7 +20,8 @@
                     "id": "674c16cd-8c69-43d7-9cf4-dd99465d36ba",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "click",
@@ -27,7 +29,8 @@
                     "id": "6527523d-0427-4576-8ad3-06b4edeb6722",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -131,6 +134,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MenuOperation",
+            "id": "71928250-b0b2-4488-ba04-8f48a536ca03",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

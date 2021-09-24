@@ -31,7 +31,7 @@ public class ClickToMove : MonoBehaviour
 
     void OnMouse(InputAction.CallbackContext ctx) {
         mousePosition = ctx.ReadValue<Vector2>();
-        Debug.Log($"OnMouse {ctx.phase} {ctx.performed} {mousePosition}");
+        // Debug.Log($"OnMouse {ctx.phase} {ctx.performed} {mousePosition}");
     }
 
     void OnEnable() {
